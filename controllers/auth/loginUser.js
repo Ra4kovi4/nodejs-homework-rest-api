@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const { SECRET_KEY } = process.env;
-console.log(SECRET_KEY);
+
 const loginUser = async (req, res, next) => {
 	const { email, password } = req.body;
 	const user = await User.findOne({ email });
