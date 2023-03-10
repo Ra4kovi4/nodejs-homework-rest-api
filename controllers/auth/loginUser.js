@@ -28,7 +28,12 @@ const loginUser = async (req, res, next) => {
 	res.json({
 		code: 200,
 		status: "Success",
-		data: { email: user.email, subscription: user.subscription, token },
+		data: {
+			email: user.email,
+			subscription: user.subscription,
+			avatarUrl: user.avatarUrl,
+			token,
+		},
 	});
 };
 

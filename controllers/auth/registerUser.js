@@ -2,6 +2,7 @@ const { User } = require("../../schema");
 const { HttpError } = require("../../helpers");
 
 const bcrypt = require("bcrypt");
+const gravatar = require("gravatar");
 
 const registerUser = async (req, res, next) => {
 	const { email, password } = req.body;
@@ -11,7 +12,12 @@ const registerUser = async (req, res, next) => {
 		throw HttpError(409, "Email already in use");
 	}
 	const hashPassword = await bcrypt.hash(password, 10);
-	const newUser = await User.create({ ...req.body, password: hashPassword });
+	const avatarUrl = gravatar.url(email);
+	const newUser = await User.create({
+		...req.body,
+		password: hashPassword,
+		avatarUrl,
+	});
 
 	res.status(201).json({
 		code: 201,
@@ -20,6 +26,7 @@ const registerUser = async (req, res, next) => {
 			email: newUser.email,
 			password,
 			subscription: newUser.subscription,
+			avatarUrl,
 		},
 	});
 };
