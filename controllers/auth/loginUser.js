@@ -5,12 +5,15 @@ const bcrypt = require("bcrypt");
 
 const { SECRET_KEY } = process.env;
 
-const loginUser = async (req, res, next) => {
+const loginUser = async (req, res) => {
 	const { email, password } = req.body;
 	const user = await User.findOne({ email });
 
 	if (!user) {
 		throw HttpError(401, "Email or password invalid");
+	}
+	if (!user.verify) {
+		throw HttpError(404, "Email not found");
 	}
 
 	const comparePassword = await bcrypt.compare(password, user.password);
